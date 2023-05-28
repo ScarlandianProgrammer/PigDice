@@ -20,17 +20,13 @@ function generateRandomValue(minValue:number, maxValue:number):number{
  */
 function changePlayers():void{
     let currentPlayerName = document.getElementById("current");
-    let player1 = <HTMLInputElement>document.getElementById("player1");
-    let player2 = <HTMLInputElement>document.getElementById("player2");
+    let player1 = (<HTMLInputElement>document.getElementById("player1")).value;
+    let player2 = (<HTMLInputElement>document.getElementById("player2")).value;
 
-    // I'm comparing them based off of a class so that I can do some css
-    // styling in the future, and it makes a bit more sense to me.
-    if (!player1.classList.contains("current-turn")){
-        player1.classList.add("current-turn");
-        currentPlayerName.innerText = player1.innerText;
+    if(currentPlayerName.innerText == player1){
+        currentPlayerName.innerText = player2;
     } else {
-        player2.classList.add("current-turn");
-        currentPlayerName.innerText = player2.innerText;
+        currentPlayerName.innerText = player1;
     }
 }
 
@@ -58,6 +54,8 @@ function createNewGame(){
 
     // getting the error display div
     let errorDisplayElement:HTMLElement = document.getElementById("name-errors");
+    // resetting the error box
+    errorDisplayElement.innerHTML = "";
     
     // checking if the player names are null or empty
     if (player1Name == null || player1Name == ""){
@@ -65,20 +63,29 @@ function createNewGame(){
         nameErrorElement.innerText = "Please enter a valid name for Player 1.";
         errorDisplayElement.appendChild(nameErrorElement);
     }
-    if (player2Name == null || player2Name == ""){
+    else if (player2Name == null || player2Name == ""){
         let nameErrorElement = document.createElement("p");
         nameErrorElement.innerText = "Please enter a valid name for Player 2.";
         errorDisplayElement.appendChild(nameErrorElement);
     }
+    // checking if the names are the same
+    else if (player1Name == player2Name){
+        let nameErrorElement = document.createElement("p");
+        nameErrorElement.innerText = "Please enter distinct names for each player";
+        errorDisplayElement.appendChild(nameErrorElement);
+    }
 
     // initializing a new game if the players have valid names
-    if (!(player1Name == null && player1Name == "") && !(player2Name == null && player2Name == "")){
+    else {
         //if both players do have a name start the game!
         document.getElementById("turn").classList.add("open");
         (<HTMLInputElement>document.getElementById("total")).value = "0";
+
         //lock in player names and then change players
         document.getElementById("player1").setAttribute("disabled", "disabled");
         document.getElementById("player2").setAttribute("disabled", "disabled");
+
+        // setting the player turns
         changePlayers();
     }
 }
@@ -100,7 +107,10 @@ function rollDie():void{
         turnTotal = 0; //  set current total to 0
     } else {
         turnTotal += numberRolled; //  add roll value to current total
-    } 
+    }
+
+    // displaying the current Turn total
+    (<HTMLInputElement>document.getElementById("total")).value = turnTotal.toString();
 
     //set the die roll to value player rolled
     //display current total on form
@@ -115,11 +125,13 @@ function rollDie():void{
 function holdDie():void{
     //get the current turn total
     let turnTotal:number = parseInt((<HTMLInputElement>document.getElementById("total")).value);
-    let player1 = <HTMLInputElement>document.getElementById("player1");
-    let currentScoreId = "";
+    let currentPlayerName:string = document.getElementById("current").innerText;
+    let player1:string = (<HTMLInputElement>document.getElementById("player1")).value;
+
+    let currentScoreId:string = "";
     //determine who the current player is
-    if (player1.classList.contains("current-turn")){
-        currentScoreId = "score2";
+    if (currentPlayerName == player1){
+        currentScoreId = "score1";
     } else {
         currentScoreId = "score2";
     }
@@ -131,6 +143,23 @@ function holdDie():void{
     //reset the turn total to 0
     turnTotal = 0;
     
+    // checking if the current player won the game
+    if (parseInt((<HTMLInputElement>document.getElementById(currentScoreId)).value) > 100){
+        endGame(currentPlayerName);
+    }
+
     //change players
     changePlayers();
+}
+
+function endGame(currentPlayerName:string):void {
+    // displaying a victory message
+    let errorDisplayElement:HTMLElement = document.getElementById("name-errors");
+    let victoryMessage = document.createElement("p");
+    victoryMessage.innerText = `Congratulations! ${currentPlayerName} wins!`;
+    errorDisplayElement.appendChild(victoryMessage);
+
+    // enabling the players to make a new game with new names
+    document.getElementById("player1").removeAttribute("disabled");
+    document.getElementById("player2").removeAttribute("disabled");
 }

@@ -5,15 +5,13 @@ function generateRandomValue(minValue, maxValue) {
 }
 function changePlayers() {
     var currentPlayerName = document.getElementById("current");
-    var player1 = document.getElementById("player1");
-    var player2 = document.getElementById("player2");
-    if (!player1.classList.contains("current-turn")) {
-        player1.classList.add("current-turn");
-        currentPlayerName.innerText = player1.innerText;
+    var player1 = document.getElementById("player1").value;
+    var player2 = document.getElementById("player2").value;
+    if (currentPlayerName.innerText == player1) {
+        currentPlayerName.innerText = player2;
     }
     else {
-        player2.classList.add("current-turn");
-        currentPlayerName.innerText = player2.innerText;
+        currentPlayerName.innerText = player1;
     }
 }
 window.onload = function () {
@@ -28,17 +26,23 @@ function createNewGame() {
     var player1Name = document.getElementById("player1").value;
     var player2Name = document.getElementById("player2").value;
     var errorDisplayElement = document.getElementById("name-errors");
+    errorDisplayElement.innerHTML = "";
     if (player1Name == null || player1Name == "") {
         var nameErrorElement = document.createElement("p");
         nameErrorElement.innerText = "Please enter a valid name for Player 1.";
         errorDisplayElement.appendChild(nameErrorElement);
     }
-    if (player2Name == null || player2Name == "") {
+    else if (player2Name == null || player2Name == "") {
         var nameErrorElement = document.createElement("p");
         nameErrorElement.innerText = "Please enter a valid name for Player 2.";
         errorDisplayElement.appendChild(nameErrorElement);
     }
-    if (!(player1Name == null && player1Name == "") && !(player2Name == null && player2Name == "")) {
+    else if (player1Name == player2Name) {
+        var nameErrorElement = document.createElement("p");
+        nameErrorElement.innerText = "Please enter distinct names for each player";
+        errorDisplayElement.appendChild(nameErrorElement);
+    }
+    else {
         document.getElementById("turn").classList.add("open");
         document.getElementById("total").value = "0";
         document.getElementById("player1").setAttribute("disabled", "disabled");
@@ -56,14 +60,16 @@ function rollDie() {
     else {
         turnTotal += numberRolled;
     }
+    document.getElementById("total").value = turnTotal.toString();
     document.getElementById("die").value = numberRolled.toString();
 }
 function holdDie() {
     var turnTotal = parseInt(document.getElementById("total").value);
-    var player1 = document.getElementById("player1");
+    var currentPlayerName = document.getElementById("current").innerText;
+    var player1 = document.getElementById("player1").value;
     var currentScoreId = "";
-    if (player1.classList.contains("current-turn")) {
-        currentScoreId = "score2";
+    if (currentPlayerName == player1) {
+        currentScoreId = "score1";
     }
     else {
         currentScoreId = "score2";
@@ -71,5 +77,16 @@ function holdDie() {
     document.getElementById(currentScoreId).value =
         (parseInt(document.getElementById(currentScoreId).value) + turnTotal).toString();
     turnTotal = 0;
+    if (parseInt(document.getElementById(currentScoreId).value) > 100) {
+        endGame(currentPlayerName);
+    }
     changePlayers();
+}
+function endGame(currentPlayerName) {
+    var errorDisplayElement = document.getElementById("name-errors");
+    var victoryMessage = document.createElement("p");
+    victoryMessage.innerText = "Congratulations! ".concat(currentPlayerName, " wins!");
+    errorDisplayElement.appendChild(victoryMessage);
+    document.getElementById("player1").removeAttribute("disabled");
+    document.getElementById("player2").removeAttribute("disabled");
 }

@@ -34,6 +34,7 @@ fieldset {
 }
 #turn h3 {
     font-weight: bold;
+    margin-left: .5em;
 }
 #player1, #player2 {
     width: 10em;

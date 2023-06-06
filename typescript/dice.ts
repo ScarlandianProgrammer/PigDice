@@ -141,8 +141,9 @@ function holdDie():void{
         (parseInt((<HTMLInputElement>document.getElementById(currentScoreId)).value) + turnTotal).toString();
     // equals what is already in the box ^^^                            plus the Turn total ^^^
 
-    //reset the turn total to 0
-    turnTotal = 0;
+    //reset the turn total and die roll to 0
+    (<HTMLInputElement>document.getElementById("total")).value = "0";
+    (<HTMLInputElement>document.getElementById("die")).value = "0";
     
     // checking if the current player won the game
     if (parseInt((<HTMLInputElement>document.getElementById(currentScoreId)).value) > 100){

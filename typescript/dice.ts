@@ -146,7 +146,7 @@ function holdDie():void{
     (<HTMLInputElement>document.getElementById("die")).value = "0";
     
     // checking if the current player won the game
-    if (parseInt((<HTMLInputElement>document.getElementById(currentScoreId)).value) > 100){
+    if (parseInt((<HTMLInputElement>document.getElementById(currentScoreId)).value) >= 100){
         endGame(currentPlayerName);
     }
 

@@ -79,7 +79,7 @@ function holdDie() {
         (parseInt(document.getElementById(currentScoreId).value) + turnTotal).toString();
     document.getElementById("total").value = "0";
     document.getElementById("die").value = "0";
-    if (parseInt(document.getElementById(currentScoreId).value) > 100) {
+    if (parseInt(document.getElementById(currentScoreId).value) >= 100) {
         endGame(currentPlayerName);
     }
     changePlayers();

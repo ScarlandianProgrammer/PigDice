@@ -23,12 +23,6 @@ input {
 fieldset {
     margin-bottom: 1em;
 }
-#turn {
-    display: none;
-}
-#turn.open {
-    display: block;
-}
 #turn p {
     font-weight: bold;
     color: red;

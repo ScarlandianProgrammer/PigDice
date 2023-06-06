@@ -1,4 +1,4 @@
-html{
+html {
     background-color: slategray;
 }
 body {
@@ -28,9 +28,12 @@ input {
 fieldset {
     margin-bottom: 1em;
 }
-#turn p {
+#turn {
+    border: 2px solid black;
+    border-radius: .25em;
+}
+#turn h3 {
     font-weight: bold;
-    color: red;
 }
 #player1, #player2 {
     width: 10em;

@@ -32,7 +32,7 @@ function changePlayers():void{
 
 // using window.onload to set up onclicks and make a new game.
 window.onload = function(){
-    let newGameBtn = document.getElementById("new_game");
+    let newGameBtn = document.getElementById("new-game");
     newGameBtn.onclick = createNewGame;
 
     document.getElementById("roll").onclick = rollDie;
@@ -77,13 +77,14 @@ function createNewGame(){
 
     // initializing a new game if the players have valid names
     else {
-        //if both players do have a name start the game!
-        document.getElementById("turn").classList.add("open");
         (<HTMLInputElement>document.getElementById("total")).value = "0";
 
         //lock in player names and then change players
         document.getElementById("player1").setAttribute("disabled", "disabled");
         document.getElementById("player2").setAttribute("disabled", "disabled");
+
+        document.getElementById("roll").removeAttribute("disabled");
+        document.getElementById("hold").removeAttribute("disabled");
 
         // setting the player turns
         changePlayers();

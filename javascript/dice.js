@@ -15,7 +15,7 @@ function changePlayers() {
     }
 }
 window.onload = function () {
-    var newGameBtn = document.getElementById("new_game");
+    var newGameBtn = document.getElementById("new-game");
     newGameBtn.onclick = createNewGame;
     document.getElementById("roll").onclick = rollDie;
     document.getElementById("hold").onclick = holdDie;
@@ -43,10 +43,11 @@ function createNewGame() {
         errorDisplayElement.appendChild(nameErrorElement);
     }
     else {
-        document.getElementById("turn").classList.add("open");
         document.getElementById("total").value = "0";
         document.getElementById("player1").setAttribute("disabled", "disabled");
         document.getElementById("player2").setAttribute("disabled", "disabled");
+        document.getElementById("roll").removeAttribute("disabled");
+        document.getElementById("hold").removeAttribute("disabled");
         changePlayers();
     }
 }
